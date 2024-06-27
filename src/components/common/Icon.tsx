@@ -7,6 +7,10 @@ import { ReactComponent as MikeIcon } from "@icons/mike.svg";
 import { ReactComponent as ProfileIcon } from "@icons/profile.svg";
 import { ReactComponent as SearchIcon } from "@icons/search.svg";
 import { ReactComponent as SettingIcon } from "@icons/setting.svg";
+import { ReactComponent as LogoIcon } from "@icons/logo.svg";
+import { ReactComponent as ClockIcon } from "@icons/clock.svg";
+import { ReactComponent as CameraIcon } from "@icons/camera.svg";
+
 import styled from "styled-components";
 
 export type IconName =
@@ -17,7 +21,10 @@ export type IconName =
   | "mike"
   | "profile"
   | "search"
-  | "setting";
+  | "setting"
+  | "logo"
+  | "camera"
+  | "clock";
 
 interface IconProps {
   name: IconName;
@@ -42,6 +49,9 @@ const Icon: React.FC<IconProps> = ({
       profile: ProfileIcon,
       search: SearchIcon,
       setting: SettingIcon,
+      logo: LogoIcon,
+      clock: ClockIcon,
+      camera: CameraIcon,
     };
 
   const IconComponent = icons[name];

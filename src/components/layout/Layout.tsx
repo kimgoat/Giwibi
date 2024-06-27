@@ -15,7 +15,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Header />
       <Main>{children}</Main>
       <VoiceRecorderContainer>
-        {/* <Camera /> */}
+        <Camera />
         <VoiceRecorder />
       </VoiceRecorderContainer>
       <BottomNav />

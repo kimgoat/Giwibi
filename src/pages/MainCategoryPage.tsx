@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "@components/layout/Layout";
 import styled from "styled-components";
 import CategoryCard from "@components/items/CategoryCard";
+import Test from "./Test";
+import { foldersApi } from "@apis/api";
 
 const test = [
   {
@@ -18,15 +20,35 @@ const test = [
   },
 ];
 
+interface Category {
+  id: number;
+  name: string;
+}
+
 const MainCategoryPage: React.FC = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await foldersApi.getAllFolders();
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <Layout>
       <CategoryGrid>
-        {test.map((item) => (
+        {categories.map((item) => (
           <CategoryCard
             id={item.id}
             name={item.name}
-            imageUrl={item.imageUrl}
+            // imageUrl={item.imageUrl}
+            imageUrl="https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/snapshots/168839197074353597.jpeg?gif=1&w=480&h=480&c=c&q=80&webp=1"
           />
         ))}
       </CategoryGrid>
@@ -39,6 +61,6 @@ export default MainCategoryPage;
 const CategoryGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  grid-gap: 12px;
+  grid-gap: 14px;
   justify-content: center;
 `;

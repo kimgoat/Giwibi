@@ -1,0 +1,11 @@
+{
+  "appId": "com.mju.gwiwibi",
+  "appName": "Gwiwibi App",
+  "webDir": "build",
+  "bundledWebRuntime": false,
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  }
+}

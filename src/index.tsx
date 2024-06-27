@@ -16,6 +16,17 @@ const AppContainer = styled.div`
   background-color: ${(props) => props.theme.colors.neutral.white};
 `;
 
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("/firebase-messaging-sw.js")
+    .then(function (registration) {
+      console.log("Service Worker registered with scope:", registration.scope);
+    })
+    .catch(function (error) {
+      console.log("Service Worker registration failed:", error);
+    });
+}
+
 const client = new QueryClient();
 const element = document.getElementById("root");
 const root = createRoot(element as Element);

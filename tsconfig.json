@@ -29,7 +29,8 @@
       "@icons/*": ["assets/icons/*"],
       "@utils/*": ["utils/*"],
       "@styles/*": ["styles/*"],
-      "@types/*": ["types/*"]
+      "@types/*": ["types/*"],
+      "@apis/*": ["apis/*"]
     }
   },
   "include": ["src"]
