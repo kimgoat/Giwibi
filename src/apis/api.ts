@@ -57,6 +57,10 @@ export const itemsApi = {
 export const categoriesApi = {
   // 카테고리 전체 조회
   getAllCategories: () => api.get("/categories"),
+
+  // 폴더별 카테고리 조회
+  getCategoriesByFolder: (folderId: number) =>
+    api.get(`/categories/${folderId}`),
 };
 
 // 폴더 관련 API

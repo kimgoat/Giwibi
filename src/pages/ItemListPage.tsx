@@ -1,7 +1,9 @@
+import { categoriesApi } from "@apis/api";
 import SearchBar from "@components/common/SearchBar";
 import ItemCard from "@components/items/ItemCard";
 import Layout from "@components/layout/Layout";
-import React from "react";
+import { getImageUrl } from "@utils/imageUtils";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 // import ItemCard from './components/ItemCard';
@@ -25,18 +27,42 @@ const test = [
   },
 ];
 
+interface Category {
+  id: number;
+  name: string;
+  usagePeriod: number;
+  imageKey: string;
+}
+
 const ItemListPage: React.FC = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
   const { categoryId } = useParams();
 
-  // 선택된 카테고리의 아이템 목록을 가져오는 로직
+  useEffect(() => {
+    const fetchCategoriesByFolder = async (folderId: number) => {
+      try {
+        const response = await categoriesApi.getCategoriesByFolder(folderId);
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategoriesByFolder(Number(categoryId));
+  }, []);
 
   return (
     <Layout>
       <PageContainer>
         <SearchBar />
         <ItemsGrid>
-          {test.map((item) => (
-            <ItemCard id={item.id} name={item.name} imageUrl={item.imageUrl} />
+          {categories.map((item) => (
+            <ItemCard
+              id={item.id}
+              name={item.name}
+              usagePeriod={item.usagePeriod}
+              imageUrl={getImageUrl(item.imageKey)}
+            />
           ))}
         </ItemsGrid>
       </PageContainer>

@@ -30,7 +30,8 @@
       "@utils/*": ["utils/*"],
       "@styles/*": ["styles/*"],
       "@types/*": ["types/*"],
-      "@apis/*": ["apis/*"]
+      "@apis/*": ["apis/*"],
+      "@utils/*": ["utils/*"]
     }
   },
   "include": ["src"]

@@ -1,10 +1,24 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 
 const Camera: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isCapturing, setIsCapturing] = useState(false);
+
+  useEffect(() => {
+    startCamera();
+    return () => {
+      // 컴포넌트가 언마운트될 때 카메라 스트림을 정리합니다.
+      if (
+        videoRef.current &&
+        videoRef.current.srcObject instanceof MediaStream
+      ) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach((track) => track.stop());
+      }
+    };
+  }, []);
 
   const startCamera = async () => {
     try {
@@ -36,9 +50,6 @@ const Camera: React.FC = () => {
   };
 
   const detectObject = async (imageData: string) => {
-    // 여기서 객체 탐지 로직을 구현합니다.
-    // TensorFlow.js를 사용하거나 서버에 이미지를 전송하여 처리할 수 있습니다.
-    // 예시로 서버에 전송하는 방법을 보여드리겠습니다.
     try {
       const response = await fetch("/api/detect-object", {
         method: "POST",
@@ -53,8 +64,6 @@ const Camera: React.FC = () => {
   };
 
   const matchWithItemList = (detectedObjects: string[]) => {
-    // 여기서 탐지된 객체와 아이템 리스트를 매칭합니다.
-    // 예시:
     const itemList = ["apple", "banana", "orange"]; // 실제 아이템 리스트로 대체해야 합니다.
     const matchedItems = detectedObjects.filter((obj) =>
       itemList.includes(obj)
@@ -67,17 +76,15 @@ const Camera: React.FC = () => {
   };
 
   const startRegistrationProcess = (item: string) => {
-    // 여기서 아이템 등록 프로세스를 시작합니다.
     console.log(`Starting registration process for ${item}`);
-    // 등록 페이지로 네비게이션하거나 모달을 열 수 있습니다.
+    // 등록 프로세스 로직 구현
   };
 
   return (
     <CameraContainer>
       <Video ref={videoRef} autoPlay playsInline />
       <Canvas ref={canvasRef} width="640" height="480" />
-      {!isCapturing && <Button onClick={startCamera}>Start Camera</Button>}
-      {isCapturing && <Button onClick={captureImage}>Capture</Button>}
+      <Button onClick={captureImage}>Capture</Button>
     </CameraContainer>
   );
 };

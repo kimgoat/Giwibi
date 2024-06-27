@@ -13,12 +13,14 @@ const Header: React.FC = () => {
 export default Header;
 
 const HeaderContainer = styled.header`
+  z-index: 99;
+  background-color: ${(props) => props.theme.colors.neutral.white};
   display: flex;
   align-items: center;
   box-shadow: ${(props) => props.theme.boxShadow};
   height: 3rem;
-  margin-bottom: 10px;
-
+  position: sticky;
+  top: 0;
   svg {
     margin-left: 20px;
   }

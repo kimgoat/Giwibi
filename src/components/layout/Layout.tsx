@@ -1,24 +1,30 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import styled from "styled-components";
-import VoiceRecorder from "@features/VoiceRecorder";
 import Header from "@components/common/Header";
 import BottomNav from "@components/common/ButtomNav";
-import Camera from "@components/features/Camera";
+import CameraModal from "@components/features/CameraModal";
+import MicrophoneModal from "@components/features/MicrophoneModal";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [isMicrophoneOpen, setIsMicrophoneOpen] = useState(false);
+
   return (
     <LayoutContainer>
       <Header />
       <Main>{children}</Main>
-      <VoiceRecorderContainer>
-        <Camera />
-        <VoiceRecorder />
-      </VoiceRecorderContainer>
-      <BottomNav />
+      <BottomNav
+        onCameraClick={() => setIsCameraOpen(true)}
+        onMicrophoneClick={() => setIsMicrophoneOpen(true)}
+      />
+      {isCameraOpen && <CameraModal onClose={() => setIsCameraOpen(false)} />}
+      {isMicrophoneOpen && (
+        <MicrophoneModal onClose={() => setIsMicrophoneOpen(false)} />
+      )}
     </LayoutContainer>
   );
 };

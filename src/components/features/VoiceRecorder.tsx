@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled, { css, keyframes } from "styled-components";
 
 const VoiceRecorder: React.FC = () => {
-  const [isListening, setIsListening] = useState(false);
+  const [isListening, setIsListening] = useState(true);
   const [waveHeights, setWaveHeights] = useState(Array(10).fill(5));
 
   useEffect(() => {
@@ -30,13 +30,6 @@ const VoiceRecorder: React.FC = () => {
         </MicIcon>
         {isListening && <RippleEffect />}
       </MicButton>
-      {/* {isListening && (
-        <WaveContainer>
-          {waveHeights.map((height, index) => (
-            <Wave key={index} height={height} />
-          ))}
-        </WaveContainer>
-      )} */}
     </Container>
   );
 };

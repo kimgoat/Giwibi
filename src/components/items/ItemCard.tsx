@@ -3,9 +3,10 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 interface ItemCardProps {
-  id: string;
+  id: number;
   name: string;
   imageUrl: string;
+  usagePeriod: number;
 }
 
 const ItemCard: React.FC<ItemCardProps> = ({ id, name, imageUrl }) => {

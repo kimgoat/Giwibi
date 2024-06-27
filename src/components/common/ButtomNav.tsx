@@ -3,19 +3,26 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Icon from "./Icon";
 
-const BottomNav: React.FC = () => {
+interface BottomNavProps {
+  onCameraClick: () => void;
+  onMicrophoneClick: () => void;
+}
+
+const BottomNav: React.FC<BottomNavProps> = ({
+  onCameraClick,
+  onMicrophoneClick,
+}) => {
   return (
     <Nav>
       <NavItem to="/">
         <Icon name="home" />
       </NavItem>
-
-      <NavItem to="/all-timers">
+      <NavButton onClick={onMicrophoneClick}>
         <Icon name="mike" />
-      </NavItem>
-      <NavItem to="/">
+      </NavButton>
+      <NavButton onClick={onCameraClick}>
         <Icon name="camera" />
-      </NavItem>
+      </NavButton>
       <NavItem to="/all-timers">
         <Icon name="profile" />
       </NavItem>
@@ -36,6 +43,14 @@ const Nav = styled.nav`
 
 const NavItem = styled(Link)`
   text-decoration: none;
+  color: #333;
+  font-size: 14px;
+`;
+
+const NavButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
   color: #333;
   font-size: 14px;
 `;
