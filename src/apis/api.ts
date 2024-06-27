@@ -28,6 +28,9 @@ export const itemsApi = {
   // 물품 전체 조회
   getAllItems: () => api.get("/items"),
 
+  // 카테고리별 물품 조회
+  getItemsByCategory: (categoryId: number) => api.get(`/items/${categoryId}`),
+
   // 물품 수정
   updateItem: (
     data: {

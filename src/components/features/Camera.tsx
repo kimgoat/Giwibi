@@ -1,22 +1,20 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
+import axios from "axios";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+
+const API_KEY = "UPyBHhD4cCV90cNl8Ceq";
+const API_URL = "https://detect.roboflow.com/deteksi-sikat-gigi/1";
 
 const Camera: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isCapturing, setIsCapturing] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     startCamera();
     return () => {
-      // 컴포넌트가 언마운트될 때 카메라 스트림을 정리합니다.
-      if (
-        videoRef.current &&
-        videoRef.current.srcObject instanceof MediaStream
-      ) {
-        const tracks = videoRef.current.srcObject.getTracks();
-        tracks.forEach((track) => track.stop());
-      }
+      stopCamera();
     };
   }, []);
 
@@ -27,14 +25,20 @@ const Camera: React.FC = () => {
       });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        setIsCapturing(true);
       }
     } catch (err) {
       console.error("Error accessing camera:", err);
     }
   };
 
-  const captureImage = () => {
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject instanceof MediaStream) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach((track) => track.stop());
+    }
+  };
+
+  const captureImage = (): string | null => {
     if (videoRef.current && canvasRef.current) {
       const context = canvasRef.current.getContext("2d");
       context?.drawImage(
@@ -44,47 +48,57 @@ const Camera: React.FC = () => {
         canvasRef.current.width,
         canvasRef.current.height
       );
-      const imageData = canvasRef.current.toDataURL("image/jpeg");
-      detectObject(imageData);
+      return canvasRef.current.toDataURL("image/jpeg").split(",")[1];
     }
+    return null;
   };
 
-  const detectObject = async (imageData: string) => {
+  const detectObject = async (imageBase64: string) => {
     try {
-      const response = await fetch("/api/detect-object", {
+      const response = await axios({
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image: imageData }),
+        url: API_URL,
+        params: { api_key: API_KEY },
+        data: imageBase64,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
-      const result = await response.json();
-      matchWithItemList(result.detectedObjects);
-    } catch (err) {
-      console.error("Error detecting object:", err);
+      return response.data;
+    } catch (error) {
+      console.error("Error detecting object:", error);
+      return null;
     }
   };
 
-  const matchWithItemList = (detectedObjects: string[]) => {
-    const itemList = ["apple", "banana", "orange"]; // 실제 아이템 리스트로 대체해야 합니다.
-    const matchedItems = detectedObjects.filter((obj) =>
-      itemList.includes(obj)
-    );
-    if (matchedItems.length > 0) {
-      startRegistrationProcess(matchedItems[0]);
-    } else {
-      console.log("No matching items found");
-    }
-  };
+  const handleCapture = async () => {
+    const imageBase64 = captureImage();
+    if (imageBase64) {
+      const result = await detectObject(imageBase64);
+      if (result) {
+        console.log("Detection Result:", result);
 
-  const startRegistrationProcess = (item: string) => {
-    console.log(`Starting registration process for ${item}`);
-    // 등록 프로세스 로직 구현
+        // 결과 분석 및 페이지 이동 로직
+        const highConfidencePrediction = result.predictions.find(
+          (pred: any) => pred.confidence >= 0.7
+        );
+
+        if (highConfidencePrediction) {
+          console.log("High confidence detection:", highConfidencePrediction);
+          navigate("/all-timers", {
+            state: { detectedObject: highConfidencePrediction },
+          });
+        } else {
+          console.log("No high confidence detection found");
+          // 여기에 사용자에게 피드백을 주는 로직을 추가할 수 있습니다.
+        }
+      }
+    }
   };
 
   return (
     <CameraContainer>
       <Video ref={videoRef} autoPlay playsInline />
       <Canvas ref={canvasRef} width="640" height="480" />
-      <Button onClick={captureImage}>Capture</Button>
+      <Button onClick={handleCapture}>Capture and Detect</Button>
     </CameraContainer>
   );
 };

@@ -40,13 +40,8 @@ const LayoutContainer = styled.div`
 
 const Main = styled.main`
   flex: 1;
+  width: 100%;
   padding: 20px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-`;
-
-const VoiceRecorderContainer = styled.div`
-  position: absolute;
-  bottom: 60px;
-  right: 20px;
 `;

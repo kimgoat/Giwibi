@@ -28,15 +28,17 @@ const MainCategoryPage: React.FC = () => {
 
   return (
     <Layout>
-      <CategoryGrid>
-        {categories.map((item) => (
-          <CategoryCard
-            id={item.id}
-            name={item.name}
-            imageUrl={getImageUrl(item.imageKey)}
-          />
-        ))}
-      </CategoryGrid>
+      <Container>
+        <CategoryGrid>
+          {categories.map((item) => (
+            <CategoryCard
+              id={item.id}
+              name={item.name}
+              imageUrl={getImageUrl(item.imageKey)}
+            />
+          ))}
+        </CategoryGrid>
+      </Container>
     </Layout>
   );
 };
@@ -44,8 +46,13 @@ const MainCategoryPage: React.FC = () => {
 export default MainCategoryPage;
 
 const CategoryGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+`;
+
+const Container = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  grid-gap: 18px;
   justify-content: center;
+  padding: 16px;
 `;

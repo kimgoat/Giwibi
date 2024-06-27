@@ -1,18 +1,46 @@
+import { itemsApi } from "@apis/api";
+import TimerCard from "@components/items/TimerCard";
 import Layout from "@components/layout/Layout";
-import React from "react";
+import { getImageUrl } from "@utils/imageUtils";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-// import TimerListItem from './components/TimerListItem';
+
+interface Item {
+  id: number;
+  name: string;
+  status: string;
+  categoryId: number;
+  imageKey: string;
+}
 
 const AllTimersPage: React.FC = () => {
-  // 모든 타이머 데이터를 가져오고 정렬하는 로직
+  const [items, setItems] = useState<Item[]>([]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await itemsApi.getAllItems();
+        setItems(response.data);
+      } catch (error) {
+        console.error("Error fetching Items:", error);
+      }
+    };
+
+    fetchItems();
+  }, []);
 
   return (
     <Layout>
       <PageContainer>
-        <h1>모든 타이머</h1>
-        <TimerList>
-          {/* 타이머 데이터를 매핑하여 TimerListItem 컴포넌트 렌더링 */}
-        </TimerList>
+        {items.map((item) => (
+          <TimerCard
+            id={item.id}
+            name={item.name}
+            status={item.status}
+            categoryId={item.categoryId}
+            imageUrl={getImageUrl(item.imageKey)}
+          />
+        ))}
       </PageContainer>
     </Layout>
   );
@@ -20,11 +48,4 @@ const AllTimersPage: React.FC = () => {
 
 export default AllTimersPage;
 
-const PageContainer = styled.div`
-  padding: 20px;
-`;
-
-const TimerList = styled.ul`
-  list-style-type: none;
-  padding: 0;
-`;
+const PageContainer = styled.div``;

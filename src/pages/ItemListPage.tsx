@@ -54,7 +54,6 @@ const ItemListPage: React.FC = () => {
   return (
     <Layout>
       <PageContainer>
-        <SearchBar />
         <ItemsGrid>
           {categories.map((item) => (
             <ItemCard

@@ -1,25 +1,53 @@
+import { itemsApi } from "@apis/api";
 import RegisterTimerModal from "@components/features/RegisterTimerModal";
+import ItemCard from "@components/items/ItemCard";
+import TimerCard from "@components/items/TimerCard";
 import Layout from "@components/layout/Layout";
-import React, { useState } from "react";
+import { getImageUrl } from "@utils/imageUtils";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 // import TimerDisplay from './components/TimerDisplay';
 
-interface RouteParams {
-  itemId: string;
+interface Item {
+  id: number;
+  name: string;
+  status: string;
+  categoryId: number;
+  imageKey: string;
 }
 
 const ItemTimerPage: React.FC = () => {
+  const [items, setItems] = useState<Item[]>([]);
   const { itemId } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 아이템 및 타이머 데이터를 가져오는 로직
+  useEffect(() => {
+    const fetchItemsByCategory = async (categoryId: number) => {
+      try {
+        const response = await itemsApi.getItemsByCategory(categoryId);
+        setItems(response.data);
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    };
+
+    fetchItemsByCategory(Number(itemId));
+  }, []);
 
   return (
     <Layout>
       <PageContainer>
-        <h1>아이템 타이머</h1>
-        {/* <TimerDisplay /> */}
+        {items.map((item) => (
+          <TimerCard
+            id={item.id}
+            name={item.name}
+            status={item.status}
+            categoryId={item.categoryId}
+            imageUrl={getImageUrl(item.imageKey)}
+          />
+        ))}
+
         <Button onClick={() => setIsModalOpen(true)}>새 타이머 등록</Button>
         {isModalOpen && (
           <RegisterTimerModal
@@ -37,9 +65,7 @@ const ItemTimerPage: React.FC = () => {
 
 export default ItemTimerPage;
 
-const PageContainer = styled.div`
-  padding: 20px;
-`;
+const PageContainer = styled.div``;
 
 const Button = styled.button`
   // 버튼 스타일링
