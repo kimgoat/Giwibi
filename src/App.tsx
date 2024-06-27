@@ -2,14 +2,18 @@ import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import GlobalStyle from "./styles/globalStyles";
 import theme from "./styles/theme";
-import Icon from "./components/Icon";
+import Icon from "./components/common/Icon";
+import Button from "./components/common/Button";
+import VoiceRecorder from "./components/features/VoiceRecorder";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <AppContainer>
-        <Icon name="home" />
+        <Icon name="home" color="#007AFF" />
+        <Button children={"button title"} />
+        <VoiceRecorder />
       </AppContainer>
     </ThemeProvider>
   );
