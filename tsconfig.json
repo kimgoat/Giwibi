@@ -19,8 +19,8 @@
     "paths": {
       "@components/*": ["components/*"],
       "@common/*": ["components/common/*"],
-      // "@assets/*": ["assets/*"],
-      // "@icons/*": ["assets/icons/*"],
+      "@assets/*": ["assets/*"],
+      "@icons/*": ["assets/icons/*"],
       "@utils/*": ["utils/*"],
       "@styles/*": ["styles/*"]
     }

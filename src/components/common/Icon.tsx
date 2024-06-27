@@ -1,12 +1,12 @@
 import React from "react";
-import { ReactComponent as AddIcon } from "../../assets/icons/add.svg";
-import { ReactComponent as DeleteIcon } from "../../assets/icons/delete.svg";
-import { ReactComponent as HomeIcon } from "../../assets/icons/home.svg";
-import { ReactComponent as InfoIcon } from "../../assets/icons/info.svg";
-import { ReactComponent as MikeIcon } from "../../assets/icons/mike.svg";
-import { ReactComponent as ProfileIcon } from "../../assets/icons/profile.svg";
-import { ReactComponent as SearchIcon } from "../../assets/icons/search.svg";
-import { ReactComponent as SettingIcon } from "../../assets/icons/setting.svg";
+import { ReactComponent as AddIcon } from "@icons/add.svg";
+import { ReactComponent as DeleteIcon } from "@icons/delete.svg";
+import { ReactComponent as HomeIcon } from "@icons/home.svg";
+import { ReactComponent as InfoIcon } from "@icons/info.svg";
+import { ReactComponent as MikeIcon } from "@icons/mike.svg";
+import { ReactComponent as ProfileIcon } from "@icons/profile.svg";
+import { ReactComponent as SearchIcon } from "@icons/search.svg";
+import { ReactComponent as SettingIcon } from "@icons/setting.svg";
 import styled from "styled-components";
 
 export type IconName =
