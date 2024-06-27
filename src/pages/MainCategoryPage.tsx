@@ -32,6 +32,7 @@ const MainCategoryPage: React.FC = () => {
         <CategoryGrid>
           {categories.map((item) => (
             <CategoryCard
+              key={item.id}
               id={item.id}
               name={item.name}
               imageUrl={getImageUrl(item.imageKey)}

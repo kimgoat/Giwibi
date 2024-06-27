@@ -34,6 +34,7 @@ const AllTimersPage: React.FC = () => {
       <PageContainer>
         {items.map((item) => (
           <TimerCard
+            key={item.id}
             id={item.id}
             name={item.name}
             status={item.status}

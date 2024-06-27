@@ -57,6 +57,7 @@ const ItemListPage: React.FC = () => {
         <ItemsGrid>
           {categories.map((item) => (
             <ItemCard
+              key={item.id}
               id={item.id}
               name={item.name}
               usagePeriod={item.usagePeriod}
