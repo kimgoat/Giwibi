@@ -7,6 +7,7 @@ import theme from "./styles/theme";
 import GlobalStyle from "./styles/globalStyles";
 import router from "./Routes";
 import { RecoilRoot } from "recoil";
+import PageTransition from "@components/common/PageTransition";
 
 const AppContainer = styled.div`
   max-width: 480px;
@@ -24,9 +25,11 @@ root.render(
     <RecoilRoot>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
+        {/* <PageTransition> */}
         <AppContainer>
           <RouterProvider router={router} />
         </AppContainer>
+        {/* </PageTransition> */}
       </ThemeProvider>
     </RecoilRoot>
   </QueryClientProvider>

@@ -1,3 +1,5 @@
+import SearchBar from "@components/common/SearchBar";
+import ItemCard from "@components/items/ItemCard";
 import Layout from "@components/layout/Layout";
 import React from "react";
 import { useParams } from "react-router-dom";
@@ -8,6 +10,21 @@ interface RouteParams {
   categoryId: string;
 }
 
+const test = [
+  {
+    id: "1",
+    name: "칫솔",
+    imageUrl:
+      "https://rebrush.co.kr/wp-content/uploads/2021/06/1-soft-toothbrush-white-230527.png",
+  },
+  {
+    id: "2",
+    name: "샤워볼",
+    imageUrl:
+      "https://m.yuripibu.com/web/product/tiny/202111/01e0152180373070af800cc798553ccf.png",
+  },
+];
+
 const ItemListPage: React.FC = () => {
   const { categoryId } = useParams();
 
@@ -16,9 +33,11 @@ const ItemListPage: React.FC = () => {
   return (
     <Layout>
       <PageContainer>
-        <h1>아이템 목록</h1>
+        <SearchBar />
         <ItemsGrid>
-          {/* 아이템 데이터를 매핑하여 ItemCard 컴포넌트 렌더링 */}
+          {test.map((item) => (
+            <ItemCard id={item.id} name={item.name} imageUrl={item.imageUrl} />
+          ))}
         </ItemsGrid>
       </PageContainer>
     </Layout>
@@ -27,12 +46,6 @@ const ItemListPage: React.FC = () => {
 
 export default ItemListPage;
 
-const PageContainer = styled.div`
-  padding: 20px;
-`;
+const PageContainer = styled.div``;
 
-const ItemsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 15px;
-`;
+const ItemsGrid = styled.div``;
