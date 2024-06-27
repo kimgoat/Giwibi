@@ -12,7 +12,7 @@ const AppContainer = styled.div`
   max-width: 480px;
   margin: 0 auto;
   min-height: 100vh;
-  background-color: ${(props) => props.theme.colors.background};
+  background-color: ${(props) => props.theme.colors.neutral.white};
 `;
 
 const client = new QueryClient();

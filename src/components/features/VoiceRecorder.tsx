@@ -59,7 +59,7 @@ const MicButton = styled.button<{ isListening: boolean }>`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: ${(props) => props.theme.colors.primary};
+  background-color: ${(props) => props.theme.colors.primary.dark};
   border: none;
   display: flex;
   align-items: center;

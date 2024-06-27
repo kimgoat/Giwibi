@@ -19,10 +19,17 @@
     "paths": {
       "@components/*": ["components/*"],
       "@common/*": ["components/common/*"],
+      "@features/*": ["components/features/*"],
+      "@items/*": ["components/items/*"],
+      "@layout/*": ["components/layout/*"],
+      "@constants/*": ["constants/*"],
+      "@hooks/*": ["hooks/*"],
+      "@pages/*": ["pages/*"],
       "@assets/*": ["assets/*"],
       "@icons/*": ["assets/icons/*"],
       "@utils/*": ["utils/*"],
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "@types/*": ["types/*"]
     }
   },
   "include": ["src"]

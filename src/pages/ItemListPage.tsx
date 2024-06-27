@@ -1,3 +1,4 @@
+import Layout from "@components/layout/Layout";
 import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -13,12 +14,14 @@ const ItemListPage: React.FC = () => {
   // 선택된 카테고리의 아이템 목록을 가져오는 로직
 
   return (
-    <PageContainer>
-      <h1>아이템 목록</h1>
-      <ItemsGrid>
-        {/* 아이템 데이터를 매핑하여 ItemCard 컴포넌트 렌더링 */}
-      </ItemsGrid>
-    </PageContainer>
+    <Layout>
+      <PageContainer>
+        <h1>아이템 목록</h1>
+        <ItemsGrid>
+          {/* 아이템 데이터를 매핑하여 ItemCard 컴포넌트 렌더링 */}
+        </ItemsGrid>
+      </PageContainer>
+    </Layout>
   );
 };
 

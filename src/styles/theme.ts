@@ -1,39 +1,28 @@
-// const theme = {
-//   colors: {
-//     primary: "#007AFF",
-//     secondary: "#5856D6",
-//     background: "#F2F2F7",
-//     text: "#000000",
-//     lightText: "#8E8E93",
-//   },
-//   fontSizes: {
-//     small: "14px",
-//     medium: "16px",
-//     large: "18px",
-//   },
-//   spacing: {
-//     small: "8px",
-//     medium: "16px",
-//     large: "24px",
-//   },
-//   borderRadius: "8px",
-//   boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-// };
+import { DefaultTheme } from "styled-components";
 
-// export default theme;
-
-const theme = {
+export const theme: DefaultTheme = {
   colors: {
-    primary: "#4A90E2", // 소프트 블루
-    secondary: "#50E3C2", // 민트 그린
-    tertiary: "#FF8A80", // 라이트 코랄
-    background: "#F5F5F5", // 오프 화이트
-    text: "#4A4A4A", // 다크 그레이
-    lightGrey: "#E0E0E0",
-    accent: "#FFC107", // 선셋 옐로우
-    success: "#4CAF50",
-    warning: "#FF9800",
-    error: "#F44336",
+    primary: {
+      main: "#4A90E2",
+      dark: "#2C71C7",
+      light: "#89C4F4",
+    },
+    secondary: {
+      beige: "#F5E2C8",
+      pink: "#FFC0CB",
+      mint: "#98FB98",
+    },
+    neutral: {
+      white: "#FFFFFF",
+      lightGrey: "#F0F0F0",
+      mediumGrey: "#B0B0B0",
+      darkGrey: "#4A4A4A",
+    },
+    semantic: {
+      success: "#4CAF50",
+      warning: "#FF9800",
+      error: "#FF5252",
+    },
   },
   fontSizes: {
     small: "14px",
@@ -46,7 +35,7 @@ const theme = {
     large: "24px",
   },
   borderRadius: "8px",
-  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
 };
 
 export default theme;

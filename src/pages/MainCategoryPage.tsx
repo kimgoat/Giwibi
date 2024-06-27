@@ -1,21 +1,44 @@
 import React from "react";
-import { ThemeProvider } from "styled-components";
-import GlobalStyle from "@styles/globalStyles";
-import theme from "@styles/theme";
-import Icon from "@components/common/Icon";
-import VoiceRecorder from "@components/features/VoiceRecorder";
-import Button from "@components/common/Button";
+import Layout from "@components/layout/Layout";
+import styled from "styled-components";
+import CategoryCard from "@components/items/CategoryCard";
 
-function MainCategoryPage() {
+const test = [
+  {
+    id: "1",
+    name: "욕실용품",
+    imageUrl:
+      "https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/snapshots/168839197074353597.jpeg?gif=1&w=480&h=480&c=c&q=80&webp=1",
+  },
+  {
+    id: "2",
+    name: "식자재",
+    imageUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUj8cOBpBCZtNojFXyU8FsQl8Eg2sWeQ4M2Q&s",
+  },
+];
+
+const MainCategoryPage: React.FC = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Icon name="home" color="#b9dbff" />
-      {/* <Button children={"button title"} /> */}
-      <Button children={"title"} />
-      <VoiceRecorder />
-    </ThemeProvider>
+    <Layout>
+      <CategoryGrid>
+        {test.map((item) => (
+          <CategoryCard
+            id={item.id}
+            name={item.name}
+            imageUrl={item.imageUrl}
+          />
+        ))}
+      </CategoryGrid>
+    </Layout>
   );
-}
+};
 
 export default MainCategoryPage;
+
+const CategoryGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 12px;
+  justify-content: center;
+`;
