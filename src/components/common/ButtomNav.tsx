@@ -24,7 +24,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
         <Icon name="camera" />
       </NavButton>
       <NavItem to="/all-timers">
-        <Icon name="profile" />
+        <Icon name="clock" />
       </NavItem>
     </Nav>
   );

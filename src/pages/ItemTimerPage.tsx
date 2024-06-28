@@ -35,6 +35,10 @@ const ItemTimerPage: React.FC = () => {
     fetchItemsByCategory(Number(itemId));
   }, []);
 
+  const handleDelete = (id: number) => {
+    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+
   return (
     <Layout>
       <PageContainer>
@@ -45,6 +49,8 @@ const ItemTimerPage: React.FC = () => {
             status={item.status}
             categoryId={item.categoryId}
             imageUrl={getImageUrl(item.imageKey)}
+            imageKey={item.imageKey}
+            onDelete={handleDelete}
           />
         ))}
 

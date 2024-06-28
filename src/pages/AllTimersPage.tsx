@@ -29,6 +29,10 @@ const AllTimersPage: React.FC = () => {
     fetchItems();
   }, []);
 
+  const handleDelete = (id: number) => {
+    setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+
   return (
     <Layout>
       <PageContainer>
@@ -40,6 +44,8 @@ const AllTimersPage: React.FC = () => {
             status={item.status}
             categoryId={item.categoryId}
             imageUrl={getImageUrl(item.imageKey)}
+            imageKey={item.imageKey}
+            onDelete={handleDelete}
           />
         ))}
       </PageContainer>

@@ -53,7 +53,16 @@ export const itemsApi = {
   },
 
   // 물품 삭제
-  deleteItem: (itemId: number) => api.delete(`/items/${itemId}`),
+  deleteItem: (id: number, imageKey: string) => {
+    const requestData = {
+      id: id,
+      imageKey: imageKey,
+    };
+
+    return api.delete("/items", {
+      data: requestData,
+    });
+  },
 };
 
 // 카테고리 관련 API
