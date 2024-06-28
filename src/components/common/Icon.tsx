@@ -10,6 +10,7 @@ import { ReactComponent as SettingIcon } from "@icons/setting.svg";
 import { ReactComponent as LogoIcon } from "@icons/logo.svg";
 import { ReactComponent as ClockIcon } from "@icons/clock.svg";
 import { ReactComponent as CameraIcon } from "@icons/camera.svg";
+import { ReactComponent as TimerIcon } from "@icons/timer.svg";
 
 import styled from "styled-components";
 
@@ -24,6 +25,7 @@ export type IconName =
   | "setting"
   | "logo"
   | "camera"
+  | "timer"
   | "clock";
 
 interface IconProps {
@@ -52,6 +54,7 @@ const Icon: React.FC<IconProps> = ({
       logo: LogoIcon,
       clock: ClockIcon,
       camera: CameraIcon,
+      timer: TimerIcon,
     };
 
   const IconComponent = icons[name];

@@ -13,18 +13,13 @@ const api = axios.create({
 // 물품 관련 API
 export const itemsApi = {
   // 물품 추가
-  addItem: (
-    data: { name: string; cycle: number; categoryId: number },
-    file: File
-  ) => {
-    const formData = new FormData();
-    formData.append("request", JSON.stringify(data));
-    formData.append("file", file);
+  addItem: (formData: FormData) => {
     return api.post("/items", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
   },
-
   // 물품 전체 조회
   getAllItems: () => api.get("/items"),
 
@@ -53,7 +48,7 @@ export const itemsApi = {
   },
 
   // 물품 삭제
-  deleteItem: (id: number, imageKey: string) => {
+  deleteItem: (id: number, imageKey: string | null) => {
     const requestData = {
       id: id,
       imageKey: imageKey,

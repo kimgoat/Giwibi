@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSwipeable } from "react-swipeable";
 import { itemsApi } from "@apis/api";
+import Icon from "@components/common/Icon";
+import theme from "@styles/theme";
 interface TimerCardProps {
   id: number;
   name: string;
@@ -31,8 +33,11 @@ const TimerCard: React.FC<TimerCardProps> = ({
 
   const handleDelete = () => {
     if (window.confirm("삭제하시겠습니까?")) {
+      const image: string | null = imageKey.indexOf("category")
+        ? null
+        : imageKey;
       itemsApi
-        .deleteItem(id, imageKey)
+        .deleteItem(id, image)
         .then((response) => {
           onDelete(id);
         })
@@ -46,9 +51,23 @@ const TimerCard: React.FC<TimerCardProps> = ({
     <CardWrapper {...handlers}>
       <CardContainer isSlided={isSlided}>
         <CardContent isSlided={isSlided}>
-          <CardImage src={imageUrl} />
-          <CardTitle>{name}</CardTitle>
+          <div style={{ display: "flex" }}>
+            <CardImage src={imageUrl} />
+            <CardTitle>{name}</CardTitle>
+          </div>
+          <IconContainer>
+            <Icon
+              name="timer"
+              size={18}
+              color={
+                status === "ING"
+                  ? `${theme.colors.semantic.success}`
+                  : "lightgray"
+              }
+            />
+          </IconContainer>
         </CardContent>
+
         <DeleteButton onClick={handleDelete}>삭제</DeleteButton>
       </CardContainer>
     </CardWrapper>
@@ -57,8 +76,16 @@ const TimerCard: React.FC<TimerCardProps> = ({
 
 export default TimerCard;
 
+const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+`;
+
 const CardContent = styled.div<{ isSlided: boolean }>`
   display: flex;
+  width: 100%;
+  justify-content: space-between;
   transition: transform 0.3s ease;
   transform: translateX(${(props) => (props.isSlided ? "80px" : "0")});
 `;

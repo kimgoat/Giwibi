@@ -11,7 +11,6 @@ const MicrophoneModal: React.FC<MicrophoneModalProps> = ({ onClose }) => {
   return (
     <ModalOverlay>
       <ModalContent>
-        <h2>Microphone Access</h2>
         <VoiceRecorder />
         <CloseButton onClick={onClose}>Close</CloseButton>
       </ModalContent>
@@ -34,12 +33,12 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background-color: white;
+  /* background-color: white;
   padding: 20px;
   border-radius: 10px;
   max-width: 90%;
   max-height: 90%;
-  overflow: auto;
+  overflow: auto; */
 `;
 
 const CloseButton = styled.button`

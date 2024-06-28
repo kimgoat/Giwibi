@@ -39,6 +39,7 @@ const Nav = styled.nav`
   padding: 13px 0;
   position: sticky;
   bottom: 0;
+  z-index: 9;
 `;
 
 const NavItem = styled(Link)`

@@ -45,78 +45,130 @@ declare global {
 
 const VoiceRecorder: React.FC = () => {
   const [isListening, setIsListening] = useState(false);
-  const [waveHeights, setWaveHeights] = useState(Array(10).fill(5));
+  const [transcript, setTranscript] = useState("");
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isListening) {
-      interval = setInterval(() => {
-        setWaveHeights(waveHeights.map(() => Math.random() * 45 + 5));
-      }, 100);
+  const startListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.start();
+      setIsListening(true);
+      setTranscript("");
     }
-    return () => clearInterval(interval);
-  }, [isListening]);
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      recognitionRef.current.stop();
+      setIsListening(false);
+      if (transcript) {
+        sendTranscriptToAPI(transcript);
+      }
+    }
+  };
 
   useEffect(() => {
-    // Speech Recognition 초기화
     const SpeechRecognitionConstructor =
       window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognitionConstructor) {
       recognitionRef.current = new SpeechRecognitionConstructor();
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = "ko-KR"; // 한국어로 설정
+      recognitionRef.current.lang = "ko-KR";
 
       recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
-        for (let i = event.resultIndex; i < event.results.length; i++) {
+        let finalTranscript = "";
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
-            // console.log("인식된 음성:", event.results[i][0].transcript);
-            sendTranscriptToAPI(event.results[i][0].transcript);
+            finalTranscript += event.results[i][0].transcript;
           }
         }
+        setTranscript(finalTranscript);
+
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => {
+          if (finalTranscript) {
+            sendTranscriptToAPI(finalTranscript);
+            stopListening();
+          }
+        }, 1500);
       };
 
       recognitionRef.current.onerror = (event: ErrorEvent) => {
         console.error("Speech recognition error", event.error);
+        setIsListening(false);
       };
+
+      // 컴포넌트 마운트 시 즉시 음성 인식 시작
+      startListening();
     } else {
       console.log("Speech Recognition is not supported");
     }
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      stopListening();
+    };
   }, []);
 
-  const sendTranscriptToAPI = async (transcript: string) => {
+  const sendTranscriptToAPI = async (text: string) => {
     try {
-      const response = await speechApi.createItemFromSpeech(transcript);
+      const response = await speechApi.createItemFromSpeech(text);
       console.log("API 응답:", response.data);
-      // 여기에서 API 응답을 처리하는 로직을 추가할 수 있습니다.
+      if (response.data.success) {
+        setModalMessage(
+          `아이템 "${response.data.createdItemList[0].name}"이(가) 등록되었습니다.`
+        );
+        setShowModal(true);
+      }
     } catch (error) {
       console.error("API 요청 오류:", error);
+      setModalMessage("아이템 등록에 실패했습니다.");
+      setShowModal(true);
     }
   };
 
   const handleMicClick = () => {
-    if (!isListening) {
-      recognitionRef.current?.start();
+    if (isListening) {
+      stopListening();
     } else {
-      recognitionRef.current?.stop();
+      startListening();
     }
-    setIsListening(!isListening);
   };
 
   return (
     <Container>
       <MicButton isListening={isListening} onClick={handleMicClick}>
         <MicIcon className="material-icons">
-          <Icon name="mike" size={28} color="white" strokeWidth={0.6} />
+          <Icon name="mike" size={40} color="white" strokeWidth={0.6} />
         </MicIcon>
         {isListening && <RippleEffect />}
       </MicButton>
+      {isListening && (
+        <ListeningText>음성을 인식하고 있습니다...</ListeningText>
+      )}
+      {showModal && (
+        <Modal>
+          <ModalContent>
+            <p>{modalMessage}</p>
+            <CloseButton onClick={() => setShowModal(false)}>닫기</CloseButton>
+          </ModalContent>
+        </Modal>
+      )}
     </Container>
   );
 };
 
 export default VoiceRecorder;
+
+const ListeningText = styled.p`
+  margin-top: 10px;
+  font-size: 14px;
+  color: ${(props) => props.theme.colors.neutral.lightGrey};
+`;
 
 const pulse = keyframes`
   0% {
@@ -131,8 +183,8 @@ const pulse = keyframes`
 `;
 
 const MicButton = styled.button<{ isListening: boolean }>`
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background-color: ${(props) => props.theme.colors.primary.dark};
   border: none;
@@ -155,11 +207,11 @@ const MicIcon = styled.i`
 
 const ripple = keyframes`
   0% {
-    transform: scale(0.8);
+    transform: scale(0.9);
     opacity: 1;
   }
   100% {
-    transform: scale(2);
+    transform: scale(3);
     opacity: 0;
   }
 `;
@@ -175,7 +227,13 @@ const RippleEffect = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: ${(props) => props.theme.colors.primary};
+  background-color: "#41747B";
   opacity: 0;
   animation: ${ripple} 1s linear infinite;
 `;
+
+const Modal = styled.div``;
+
+const ModalContent = styled.div``;
+
+const CloseButton = styled.div``;
