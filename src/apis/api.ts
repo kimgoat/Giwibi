@@ -71,3 +71,19 @@ export const foldersApi = {
   // 폴더 전체 조회
   getAllFolders: () => api.get("/folders"),
 };
+
+// 음성 인식 관련 API
+export const speechApi = {
+  // 음성 텍스트로 아이템 생성
+  createItemFromSpeech: (prompt: string) => {
+    return api.post(
+      "/parsing/text",
+      { prompt },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  },
+};
